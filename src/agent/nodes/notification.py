@@ -29,9 +29,22 @@ class NotificationNode:
     async def __call__(self, state: AgentState) -> Dict[str, Any]:
         """执行消息通知"""
         user_input = state.get("user_input", "")
-        target = state.get("notification_target", "feishu")
+        target = state.get("notification_target", "")
         content = state.get("notification_content", user_input)
         notify_type = state.get("notification_type", self._detect_notification_type(user_input))
+
+        # 自动选择已配置的平台
+        if not target:
+            target = self._auto_detect_platform()
+            if not target:
+                return {
+                    "final_response": (
+                        "⚠️ 未配置任何消息平台。请先在 `.env` 中配置：\n\n"
+                        "- 钉钉: `DINGTALK_WEBHOOK_URL`\n"
+                        "- 企业微信: `WECOM_WEBHOOK_URL`\n"
+                        "- 飞书: `FEISHU_APP_ID` + `FEISHU_APP_SECRET`"
+                    )
+                }
 
         # Step 1: 格式化通知内容
         system_prompt = prompts.render_system(
@@ -92,6 +105,17 @@ class NotificationNode:
             if any(kw in text.lower() for kw in keywords):
                 return ntype
         return "custom"
+
+    def _auto_detect_platform(self) -> str:
+        """自动检测已配置的消息平台"""
+        import os
+        if os.getenv("DINGTALK_WEBHOOK_URL"):
+            return "dingtalk"
+        if os.getenv("WECOM_WEBHOOK_URL"):
+            return "wecom"
+        if os.getenv("FEISHU_APP_ID") and os.getenv("FEISHU_APP_SECRET"):
+            return "feishu"
+        return ""
 
     async def _send_notification(self, platform: str, content: str) -> bool:
         """发送通知到指定平台"""
