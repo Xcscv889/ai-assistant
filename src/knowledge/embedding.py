@@ -87,13 +87,14 @@ class EmbeddingService:
     # ============================================================
 
     def _check_openai_available(self) -> bool:
-        """检查 OpenAI API Key 是否有效（非空且非占位符）"""
+        """检查是否有可用的 Embedding API（OpenAI 或 DeepSeek）"""
         import os
 
-        api_key = os.getenv("OPENAI_API_KEY", "").strip()
-        if not api_key or api_key in ("sk-xxxxx", "sk-placeholder"):
-            return False
-        return True
+        # 如果 .env 里配置了 OPENAI_API_KEY 就用 OpenAI
+        openai_key = os.getenv("OPENAI_API_KEY", "").strip()
+        if openai_key and openai_key not in ("sk-xxxxx", "sk-placeholder"):
+            return True
+        return False
 
     def _embed_openai(self, texts: List[str]) -> List[List[float]]:
         """使用 OpenAI Embedding API"""
