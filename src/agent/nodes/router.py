@@ -1,80 +1,155 @@
-"""Router 节点 - 纯规则引擎，零延迟意图识别"""
+"""Router 节点 - 混合路由引擎，规则优先 + LLM 兜底"""
 
 import re
 from typing import Any, Dict
 
 from loguru import logger
 
+from ...models.base import BaseModelAdapter
+from ..prompts import prompts
 from ..state import AgentState
 
 
 class RouterNode:
-    """意图识别路由节点 — 纯规则匹配，不触发 LLM 调用
+    """意图识别路由节点
 
-    所有意图识别通过关键词和正则完成，延迟 < 1ms。
-    避免了之前每次对话都要先走一轮 LLM 的额外延迟。
+    策略：规则优先（快）+ LLM 兜底（准）
+    - 规则匹配命中 → 直接返回，零延迟
+    - 规则未命中 → 调 LLM 做意图识别，保证准确率
     """
 
     def __init__(self, model_adapter=None):
-        self.model = model_adapter  # 保留参数兼容性，但不使用
+        self.model = model_adapter
 
     async def __call__(self, state: AgentState) -> Dict[str, Any]:
-        """执行意图识别（同步规则匹配，无需 LLM）"""
         user_input = state.get("user_input", "")
-
         if not user_input:
             return {"intent": "chat", "confidence": 1.0}
 
-        # 快速规则匹配：文件路径检测
-        if self._detect_file_reference(user_input):
-            logger.info(f"规则匹配 -> document")
-            return {"intent": "document", "confidence": 0.95}
+        # === 第一层：规则匹配，零延迟 ===
+        # 通知类（明确提到发消息/通知）
+        if self._is_notify(user_input):
+            target = self._extract_notify_target(user_input)
+            logger.info(f"规则匹配 -> notify (target={target})")
+            return {"intent": "notify", "confidence": 0.95, "notification_target": target}
 
-        # 快速规则匹配：通知关键词
-        if self._detect_notification_intent(user_input):
-            logger.info(f"规则匹配 -> notify")
-            return {"intent": "notify", "confidence": 0.9}
+        # 文档处理类（明确提到文件操作）
+        if self._is_document(user_input):
+            task = self._extract_document_task(user_input)
+            logger.info(f"规则匹配 -> document (task={task})")
+            return {"intent": "document", "confidence": 0.95, "task_type": task}
 
-        # 知识问答关键词检测
-        if self._detect_qa_intent(user_input):
+        # 知识问答类（明确在问问题）
+        if self._is_qa(user_input):
             logger.info(f"规则匹配 -> qa")
-            return {"intent": "qa", "confidence": 0.8}
+            return {"intent": "qa", "confidence": 0.85}
 
-        # 默认对话
-        logger.info(f"规则匹配 -> chat")
-        return {"intent": "chat", "confidence": 0.8}
+        # === 第二层：LLM 兜底 ===
+        if self.model:
+            try:
+                system_prompt = prompts.get_system("router")
+                response = await self.model.chat(
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_input},
+                    ],
+                    temperature=0.3,
+                    max_tokens=128,
+                )
+                intent, confidence = self._parse_json(response)
+                logger.info(f"LLM 路由: intent={intent}, confidence={confidence:.2f}")
+                return {"intent": intent, "confidence": confidence}
+            except Exception as e:
+                logger.warning(f"LLM 路由失败，回退 chat: {e}")
 
-    def _detect_file_reference(self, text: str) -> bool:
-        """检测文件引用"""
-        patterns = [
-            r'\.pdf\b', r'\.docx?\b', r'\.pptx?\b', r'\.xlsx?\b',
-            r'\.md\b', r'\.txt\b', r'\.csv\b',
-            r'[CcDdEeFf]:\\',
-            r'/~?[\w/.-]+/',
-            r'上传', r'解析', r'读取.*文件',
-            r'总结.*[文档论文文件]', r'分析.*[文档论文文件]',
-            r'处理.*文件', r'翻译.*文档',
-            r'简历', r'论文', r'这[份个].*[文档简历论文]',
-        ]
-        return any(re.search(p, text) for p in patterns)
+        return {"intent": "chat", "confidence": 0.6}
 
-    def _detect_notification_intent(self, text: str) -> bool:
-        """检测通知意图"""
+    # ============================================================
+    # 通知识别
+    # ============================================================
+
+    def _is_notify(self, text: str) -> bool:
         keywords = [
-            r'发送.*通知', r'推送.*消息', r'提醒', r'通知.*群',
-            r'发.*飞书', r'发.*企微', r'发.*钉钉', r'发.*消息',
-            r'发通知', r'推送',
-            r'会议纪要.*发', r'报告.*发',
+            "发一条", "发送通知", "推送消息", "发通知", "推送",
+            "发条消息", "发条通知", "发个通知", "发个消息",
+            "发到群里", "发到群", "群里发",
+            "通知大家", "提醒大家", "提醒一下",
+            "飞书发", "钉钉发", "企微发",
         ]
-        return any(re.search(k, text) for k in keywords)
+        return any(kw in text for kw in keywords)
 
-    def _detect_qa_intent(self, text: str) -> bool:
-        """检测知识问答意图"""
-        patterns = [
-            r'[?？]',                     # 问号
-            r'什么(是|叫|意思)', r'如何', r'怎么', r'为什么',
-            r'介绍', r'说明', r'解释', r'定义',
-            r'搜索', r'查找', r'查一下', r'帮我查',
-            r'论文', r'文献', r'知识',
+    def _extract_notify_target(self, text: str) -> str:
+        if "钉钉" in text:
+            return "dingtalk"
+        if "飞书" in text:
+            return "feishu"
+        if "企微" in text or "企业微信" in text:
+            return "wecom"
+        return ""
+
+    # ============================================================
+    # 文档识别
+    # ============================================================
+
+    def _is_document(self, text: str) -> bool:
+        # 文件扩展名
+        if re.search(r'\.(pdf|docx?|pptx?|xlsx?|md|txt|csv)\b', text, re.IGNORECASE):
+            return True
+        # 路径
+        if re.search(r'[A-Za-z]:\\|/~?[\w/.-]+/', text):
+            return True
+        # 文档操作关键词
+        keywords = [
+            "总结", "摘要", "概括", "提取", "翻译",
+            "分析", "处理", "解析", "上传",
+            "简历", "论文", "文档", "文件",
         ]
-        return any(re.search(p, text) for p in patterns)
+        return any(kw in text for kw in keywords)
+
+    def _extract_document_task(self, text: str) -> str:
+        if any(kw in text for kw in ["总结", "摘要", "概括"]):
+            return "summarize"
+        if any(kw in text for kw in ["提取", "抽取"]):
+            return "extract"
+        if any(kw in text for kw in ["翻译", "translate"]):
+            return "translate"
+        if any(kw in text for kw in ["分析", "优缺点", "建议"]):
+            return "analyze"
+        return "summarize"
+
+    # ============================================================
+    # 知识问答识别
+    # ============================================================
+
+    def _is_qa(self, text: str) -> bool:
+        # 问号
+        if "?" in text or "？" in text:
+            return True
+        # 疑问词
+        question_words = [
+            "什么", "怎么", "如何", "为什么", "哪", "谁",
+            "介绍", "说明", "解释", "定义", "是什么",
+            "怎么样", "多少钱", "多少",
+        ]
+        if any(w in text for w in question_words):
+            return True
+        return False
+
+    # ============================================================
+    # JSON 解析
+    # ============================================================
+
+    def _parse_json(self, response: str) -> tuple:
+        valid = {"qa", "document", "notify", "chat"}
+        import json
+        try:
+            m = re.search(r'\{[^{}]*"intent"[^{}]*\}', response)
+            if m:
+                data = json.loads(m.group())
+                i = data.get("intent", "chat")
+                c = float(data.get("confidence", 0.5))
+                if i in valid:
+                    return i, min(max(c, 0.0), 1.0)
+        except Exception:
+            pass
+        return "chat", 0.5
