@@ -26,7 +26,12 @@ class RouterNode:
         if not user_input:
             return {"intent": "chat", "confidence": 1.0}
 
-        # === 第一层：规则匹配，零延迟 ===
+        # === 第0层：简单对话直接识别，不调 LLM ===
+        if self._is_chat(user_input):
+            logger.info(f"快速匹配 -> chat")
+            return {"intent": "chat", "confidence": 0.95}
+
+        # === 第一层：规则匹配 ===
         # 通知类（明确提到发消息/通知）
         if self._is_notify(user_input):
             target = self._extract_notify_target(user_input)
@@ -132,6 +137,16 @@ class RouterNode:
             "怎么样", "多少钱", "多少",
         ]
         if any(w in text for w in question_words):
+            return True
+        return False
+
+    def _is_chat(self, text: str) -> bool:
+        """判断是否只是普通对话（不触发 LLM 路由）"""
+        chat_keywords = ["你好", "谢谢", "再见", "好的", "嗯", "哦", "嗨"]
+        stripped = text.strip()
+        if len(stripped) <= 3:
+            return True
+        if any(stripped == kw for kw in chat_keywords):
             return True
         return False
 
