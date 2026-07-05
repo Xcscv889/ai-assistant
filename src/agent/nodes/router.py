@@ -54,6 +54,7 @@ class RouterNode:
             r'上传', r'解析', r'读取.*文件',
             r'总结.*[文档论文文件]', r'分析.*[文档论文文件]',
             r'处理.*文件', r'翻译.*文档',
+            r'简历', r'论文', r'这[份个].*[文档简历论文]',
         ]
         return any(re.search(p, text) for p in patterns)
 
