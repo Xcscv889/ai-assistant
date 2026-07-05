@@ -62,6 +62,7 @@ class RouterNode:
         keywords = [
             r'发送.*通知', r'推送.*消息', r'提醒', r'通知.*群',
             r'发.*飞书', r'发.*企微', r'发.*钉钉', r'发.*消息',
+            r'发通知', r'推送',
             r'会议纪要.*发', r'报告.*发',
         ]
         return any(re.search(k, text) for k in keywords)
