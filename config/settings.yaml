@@ -1,0 +1,48 @@
+# AI Office Assistant - 全局配置
+
+app:
+  name: "AI Office Assistant"
+  version: "0.1.0"
+  debug: false
+  log_level: "INFO"
+
+agent:
+  max_iterations: 10
+  timeout_seconds: 300
+  enable_cache: true
+
+knowledge_base:
+  persist_directory: "./data/knowledge_base/chroma_db"
+  collection_name: "office_docs"
+  chunk_size: 1000
+  chunk_overlap: 200
+  top_k_retrieval: 5
+
+document:
+  max_file_size_mb: 100
+  supported_formats:
+    - pdf
+    - docx
+    - pptx
+    - md
+    - txt
+    - xlsx
+  ocr_enabled: true
+  ocr_lang: ["ch", "en"]
+
+notification:
+  platforms:
+    feishu:
+      enabled: false
+      app_id: ""
+      app_secret: ""
+    wecom:
+      enabled: false
+      webhook_url: ""
+    dingtalk:
+      enabled: false
+      webhook_url: ""
+
+web_ui:
+  host: "127.0.0.1"
+  port: 8501
