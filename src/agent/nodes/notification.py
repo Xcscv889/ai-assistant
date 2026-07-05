@@ -146,9 +146,8 @@ class NotificationNode:
             return response.status_code == 200
 
     async def _send_dingtalk(self, content: str) -> bool:
-        """发送钉钉 Webhook 消息"""
+        """发送钉钉 Webhook 消息（text 字段中自动包含安全关键词）"""
         import os
-
         import httpx
 
         webhook_url = os.getenv("DINGTALK_WEBHOOK_URL", "")
@@ -156,13 +155,28 @@ class NotificationNode:
             logger.warning("未设置 DINGTALK_WEBHOOK_URL")
             return False
 
+        keyword = os.getenv("DINGTALK_KEYWORD", "ai")
+
+        # 钉钉 markdown 类型的关键词校验只检查 text 字段内容（不检查 title）
+        # 且关键词区分大小写（必须是纯小写 "ai"）
+        if keyword not in content:
+            # 在前面追加关键词确保命中
+            content = keyword + " " + content
+
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 webhook_url,
                 json={
                     "msgtype": "markdown",
-                    "markdown": {"title": "AI 助手通知", "text": content},
+                    "markdown": {"title": "AI 通知", "text": content},
                 },
                 timeout=10,
             )
-            return response.status_code == 200
+            if response.status_code == 200:
+                data = response.json()
+                ok = data.get("errcode") == 0
+                if not ok:
+                    logger.warning(f"钉钉返回错误: {data.get('errmsg')}")
+                return ok
+            logger.warning(f"钉钉 HTTP 错误: {response.status_code}")
+            return False

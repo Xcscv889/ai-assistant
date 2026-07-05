@@ -95,10 +95,18 @@ class NotificationTool:
                 return f"企业微信发送失败: HTTP {resp.status_code}"
 
     async def _send_dingtalk(self, content: str, msg_type: str) -> str:
-        """发送钉钉 Webhook 消息"""
+        """发送钉钉 Webhook 消息，自动追加安全关键词"""
         webhook_url = os.getenv("DINGTALK_WEBHOOK_URL", "")
         if not webhook_url:
             return "钉钉未配置: 请设置 DINGTALK_WEBHOOK_URL"
+
+        # 钉钉机器人安全设置：消息 text 字段必须包含指定关键词
+        # 关键词区分大小写，必须是纯小写 "ai"
+        keyword = os.getenv("DINGTALK_KEYWORD", "ai")
+
+        # 自动在前面追加关键词（钉钉只检查实际传入的 content/text 字段）
+        if keyword not in content:
+            content = keyword + " " + content
 
         body = {
             "msgtype": msg_type if msg_type == "markdown" else "text",
@@ -111,6 +119,10 @@ class NotificationTool:
         async with httpx.AsyncClient() as client:
             resp = await client.post(webhook_url, json=body, timeout=10)
             if resp.status_code == 200:
-                return "✅ 钉钉消息已发送"
+                data = resp.json()
+                if data.get("errcode") == 0:
+                    return "钉钉消息已发送"
+                else:
+                    return f"钉钉返回错误: {data.get('errmsg', '未知错误')}"
             else:
                 return f"钉钉发送失败: HTTP {resp.status_code}"
