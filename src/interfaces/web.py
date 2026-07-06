@@ -43,27 +43,10 @@ st.markdown("""
         color: #F8FAFC !important;
     }
 
-    /* ===== 全局变量 ===== */
-    :root {
-        --primary: #6366F1;
-        --primary-dark: #4F46E5;
-        --primary-light: #A5B4FC;
-        --success: #10B981;
-        --warning: #F59E0B;
-        --danger: #EF4444;
-        --bg-primary: #0F172A;
-        --bg-secondary: #1E293B;
-        --bg-card: rgba(255,255,255,0.08);
-        --bg-hover: rgba(255,255,255,0.12);
-        --border: rgba(255,255,255,0.15);
-        --text-primary: #F8FAFC;
-        --text-secondary: #CBD5E1;
-        --text-muted: #94A3B8;
-    }
-
     /* ===== 主容器 ===== */
     .main .block-container {
         padding-top: 1.5rem;
+        padding-bottom: 0;
         max-width: 1100px;
         background-color: #0F172A !important;
     }
@@ -75,28 +58,26 @@ st.markdown("""
         gap: 1rem;
         padding: 1.5rem 1.5rem 1rem 1.5rem;
         margin-bottom: 0.5rem;
-        border-bottom: 1px solid var(--border);
-        background: linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(165,180,252,0.05) 100%);
+        border-bottom: 1px solid rgba(255,255,255,0.12);
+        background: linear-gradient(135deg, rgba(99,102,241,0.10) 0%, rgba(165,180,252,0.04) 100%);
         border-radius: 16px;
         backdrop-filter: blur(10px);
     }
     .app-header-icon {
         font-size: 2.8rem;
         line-height: 1;
-        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
     }
     .app-header-text h1 {
         margin: 0;
         font-size: 1.6rem;
         font-weight: 700;
-        color: var(--text-primary);
         background: linear-gradient(135deg, #6366F1, #A5B4FC);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
     .app-header-text p {
         margin: 0.2rem 0 0 0;
-        color: var(--text-muted);
+        color: #94A3B8;
         font-size: 0.85rem;
     }
 
@@ -104,32 +85,31 @@ st.markdown("""
     .stat-cards {
         display: flex;
         gap: 1rem;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.2rem;
     }
     .stat-card {
         flex: 1;
-        padding: 1rem 1.2rem;
+        padding: 0.85rem 1rem;
         border-radius: 12px;
-        border: 1px solid var(--border);
-        background: var(--bg-card);
-        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(255,255,255,0.06);
         transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
     }
     .stat-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 32px rgba(99,102,241,0.2);
-        border-color: rgba(99,102,241,0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(99,102,241,0.15);
+        border-color: rgba(99,102,241,0.25);
     }
     .stat-card .stat-value {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
         font-weight: 700;
-        color: var(--text-primary);
+        color: #F8FAFC;
         line-height: 1.2;
     }
     .stat-card .stat-label {
-        font-size: 0.78rem;
-        color: var(--text-muted);
-        margin-top: 0.2rem;
+        font-size: 0.72rem;
+        color: #94A3B8;
+        margin-top: 0.15rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -137,91 +117,45 @@ st.markdown("""
     .stat-card.success { border-left: 4px solid #10B981; }
     .stat-card.warning { border-left: 4px solid #F59E0B; }
 
-    /* ===== 功能快捷入口 ===== */
-    .quick-actions {
-        display: flex;
-        gap: 0.7rem;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-    }
-    .quick-action-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.6rem 1.1rem;
-        border-radius: 22px;
-        border: 1px solid var(--border);
-        background: var(--bg-card);
-        font-size: 0.82rem;
-        color: var(--text-primary);
-        cursor: pointer;
-        transition: all 0.2s;
-        backdrop-filter: blur(8px);
-    }
-    .quick-action-chip:hover {
-        border-color: rgba(99,102,241,0.5);
-        background: rgba(99,102,241,0.15);
-        color: var(--text-primary);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 16px rgba(99,102,241,0.15);
-    }
-    .quick-action-chip:active {
-        transform: translateY(0);
-    }
-
-    /* ===== 聊天消息美化 ===== */
+    /* ===== 聊天消息 ===== */
     .stChatMessage {
         padding: 1rem 1.2rem !important;
         border-radius: 14px !important;
         margin-bottom: 0.8rem;
     }
     .stChatMessage[data-message-role="user"] {
-        background: rgba(99,102,241,0.12) !important;
+        background: rgba(99,102,241,0.10) !important;
         border-left: 4px solid #6366F1 !important;
     }
     .stChatMessage[data-message-role="assistant"] {
-        background: rgba(255,255,255,0.05) !important;
-        border-left: 4px solid var(--primary) !important;
+        background: rgba(255,255,255,0.04) !important;
+        border-left: 4px solid #6366F1 !important;
     }
 
-    /* ===== 侧边栏美化 ===== */
+    /* ===== 侧边栏 ===== */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, rgba(15,23,42,0.98) 0%, rgba(30,41,59,0.96) 100%);
-        border-right: 1px solid rgba(255,255,255,0.08);
+        border-right: 1px solid rgba(255,255,255,0.06);
         padding-top: 1rem;
-        backdrop-filter: blur(10px);
     }
-    [data-testid="stSidebar"] .stMarkdown h2 {
-        font-size: 1.2rem !important;
-        color: var(--text-primary) !important;
-    }
-    [data-testid="stSidebar"] .stMarkdown h3 {
-        font-size: 0.95rem !important;
-        color: var(--text-muted) !important;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-top: 1.2rem;
-    }
-    [data-testid="stSidebar"] .stMarkdown p {
-        color: var(--text-muted) !important;
-    }
-    [data-testid="stSidebar"] .stMarkdown a {
-        color: #A5B4FC !important;
-    }
+    [data-testid="stSidebar"] .stMarkdown h2 { font-size: 1.1rem !important; color: #F8FAFC !important; }
+    [data-testid="stSidebar"] .stMarkdown h3 { font-size: 0.9rem !important; color: #94A3B8 !important; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 1rem; }
+    [data-testid="stSidebar"] .stMarkdown p { color: #94A3B8 !important; }
+    [data-testid="stSidebar"] .stMarkdown a { color: #A5B4FC !important; }
+    [data-testid="stSidebar"] hr { border-top: 1px solid rgba(255,255,255,0.08) !important; margin: 0.8rem 0; }
 
-    /* ===== 按钮 ===== */
+    /* ===== 通用按钮 ===== */
     .stButton > button {
         border-radius: 10px !important;
-        border: 1px solid var(--border) !important;
-        background: var(--bg-card) !important;
-        color: var(--text-primary) !important;
+        border: 1px solid rgba(255,255,255,0.14) !important;
+        background: rgba(255,255,255,0.06) !important;
+        color: #F8FAFC !important;
         transition: all 0.2s !important;
-        backdrop-filter: blur(8px);
     }
     .stButton > button:hover {
-        border-color: rgba(99,102,241,0.5) !important;
-        background: rgba(99,102,241,0.15) !important;
-        box-shadow: 0 4px 16px rgba(99,102,241,0.2);
+        border-color: rgba(99,102,241,0.4) !important;
+        background: rgba(99,102,241,0.12) !important;
+        box-shadow: 0 4px 12px rgba(99,102,241,0.15);
     }
     .stButton > button[kind="primary"] {
         background: linear-gradient(135deg, #6366F1, #8B5CF6) !important;
@@ -230,108 +164,218 @@ st.markdown("""
     }
     .stButton > button[kind="primary"]:hover {
         background: linear-gradient(135deg, #4F46E5, #7C3AED) !important;
-        box-shadow: 0 4px 20px rgba(99,102,241,0.3);
+        box-shadow: 0 4px 16px rgba(99,102,241,0.3);
     }
-
-    /* ===== Selectbox / 文件上传 ===== */
-    .stSelectbox > div > div {
-        border-radius: 10px !important;
-        background: var(--bg-card) !important;
-        border: 1px solid var(--border) !important;
-    }
-    [data-testid="stFileUploader"] {
-        border-radius: 12px !important;
-        background: var(--bg-card) !important;
-    }
-
-    /* ===== 聊天输入 ===== */
-    [data-testid="stChatInput"] textarea {
-        border-radius: 14px !important;
-        background: var(--bg-card) !important;
-        color: var(--text-primary) !important;
-        border: 1px solid var(--border) !important;
-        padding: 0.75rem 1rem !important;
-        font-size: 0.95rem;
-        transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    [data-testid="stChatInput"] textarea:focus-within {
-        border-color: rgba(99,102,241,0.5) !important;
-        box-shadow: 0 0 0 3px rgba(99,102,241,0.2) !important;
-    }
-    [data-testid="stChatInput"] textarea::placeholder {
-        color: var(--text-muted) !important;
-    }
-    [data-testid="stChatInput"] textarea:hover {
-        border-color: rgba(255,255,255,0.2) !important;
-    }
-
-    /* ===== 聊天消息文本 ===== */
-    .stChatMessage .stMarkdown {
-        color: var(--text-primary) !important;
-        line-height: 1.6;
-    }
-    .stChatMessage .stMarkdown p {
-        margin: 0.4rem 0;
-    }
-    .stChatMessage .stMarkdown a {
-        color: #A5B4FC !important;
-    }
-
-    /* ===== 拖拽上传区域 ===== */
-    [data-testid="stFileUploader"] .stMarkdown {
-        color: var(--text-primary) !important;
-    }
-
-    /* ===== 侧边栏按钮 ===== */
     [data-testid="stSidebar"] .stButton > button {
         border-radius: 8px !important;
-        background: var(--bg-card) !important;
-        color: var(--text-primary) !important;
-        border: 1px solid var(--border) !important;
-        transition: all 0.15s !important;
+        background: rgba(255,255,255,0.06) !important;
+        color: #F8FAFC !important;
+        border: 1px solid rgba(255,255,255,0.10) !important;
         font-size: 0.85rem;
     }
     [data-testid="stSidebar"] .stButton > button:hover {
-        background: rgba(99,102,241,0.15) !important;
-        border-color: rgba(99,102,241,0.5) !important;
+        background: rgba(99,102,241,0.12) !important;
+        border-color: rgba(99,102,241,0.4) !important;
     }
 
-    /* ===== 侧边栏分隔线 ===== */
-    [data-testid="stSidebar"] hr {
-        border-top: 1px solid var(--border) !important;
-        margin: 1rem 0;
+    /* ===== Selectbox / File Uploader ===== */
+    .stSelectbox > div > div {
+        border-radius: 10px !important;
+        background: rgba(255,255,255,0.06) !important;
+        border: 1px solid rgba(255,255,255,0.14) !important;
+    }
+    [data-testid="stFileUploader"] {
+        border-radius: 12px !important;
+        background: rgba(255,255,255,0.06) !important;
+    }
+
+    /* ================================================================
+       自定义输入栏 — 核心改造
+       ================================================================ */
+    .custom-input-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.04) 100%);
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 18px;
+        padding: 0.55rem 0.7rem 0.55rem 1.1rem;
+        backdrop-filter: blur(12px);
+        transition: border-color 0.25s, box-shadow 0.25s;
+        margin-top: 0.5rem;
+    }
+    .custom-input-bar:focus-within {
+        border-color: rgba(99,102,241,0.55);
+        box-shadow: 0 0 0 4px rgba(99,102,241,0.12), 0 4px 24px rgba(99,102,241,0.10);
+    }
+    .custom-input-bar input {
+        flex: 1;
+        background: transparent !important;
+        border: none !important;
+        outline: none !important;
+        color: #F8FAFC !important;
+        font-size: 0.95rem;
+        padding: 0.3rem 0;
+        min-width: 0;
+        line-height: 1.5;
+    }
+    .custom-input-bar input::placeholder {
+        color: #64748B !important;
+        font-style: italic;
+    }
+
+    /* ===== 快捷按钮行 ===== */
+    .action-row {
+        display: flex;
+        gap: 0.6rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .action-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.45rem 0.9rem;
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(255,255,255,0.05);
+        font-size: 0.8rem;
+        color: #CBD5E1;
+        cursor: pointer;
+        transition: all 0.2s;
+        backdrop-filter: blur(8px);
+        white-space: nowrap;
+    }
+    .action-chip:hover {
+        border-color: rgba(99,102,241,0.45);
+        background: rgba(99,102,241,0.12);
+        color: #F8FAFC;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(99,102,241,0.12);
+    }
+    .action-chip.active {
+        border-color: #6366F1;
+        background: rgba(99,102,241,0.20);
+        color: #F8FAFC;
+        box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+    }
+
+    /* ===== 上传区域（内置到输入栏） ===== */
+    .inline-upload [data-testid="stFileUploader"] {
+        border-radius: 10px !important;
+        background: transparent !important;
+    }
+    .inline-upload [data-testid="stFileUploader"] > section {
+        border-radius: 10px !important;
+        padding: 0.35rem 0.6rem !important;
+        background: rgba(99,102,241,0.10) !important;
+        border: 1px dashed rgba(99,102,241,0.35) !important;
+        min-width: 100px;
+    }
+    .inline-upload [data-testid="stFileUploader"] button {
+        border-radius: 8px !important;
+        background: rgba(99,102,241,0.15) !important;
+        border: none !important;
+        color: #A5B4FC !important;
+        font-size: 0.85rem;
+        padding: 0.35rem 0.8rem;
+    }
+    .inline-upload [data-testid="stFileUploader"] button:hover {
+        background: rgba(99,102,241,0.25) !important;
+    }
+    .inline-upload p {
+        color: #CBD5E1 !important;
+        font-size: 0.7rem;
+    }
+
+    /* ===== 功能面板（展开后显示在输入框上方） ===== */
+    .function-panel {
+        background: linear-gradient(135deg, rgba(30,41,59,0.92) 0%, rgba(30,41,59,0.80) 100%);
+        border: 1px solid rgba(99,102,241,0.18);
+        border-radius: 14px;
+        padding: 1.2rem;
+        margin-bottom: 0.6rem;
+        backdrop-filter: blur(10px);
+    }
+
+    /* ===== 通用文本 / 输入颜色 ===== */
+    .stMarkdown, .stMarkdown *, .stMarkdown p, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+        color: #F8FAFC !important;
+    }
+    .stCaption { color: #94A3B8 !important; }
+
+    /* ===== 强力覆盖 Streamlit 输入框颜色 ===== */
+    /* 覆盖所有 input 元素，无论 Streamlit 怎么嵌套 */
+    input, textarea,
+    [data-testid="stTextInput"] input,
+    [data-testid="stChatInput"] textarea,
+    .stTextInput input,
+    .stTextArea textarea,
+    .stTextInput > div > div > input {
+        color: #F8FAFC !important;
+        caret-color: #A5B4FC !important;
+        background-color: #1E293B !important;
+        -webkit-text-fill-color: #F8FAFC !important;
+    }
+    input::placeholder, textarea::placeholder,
+    [data-testid="stTextInput"] input::placeholder,
+    [data-testid="stChatInput"] textarea::placeholder {
+        color: #64748B !important;
+        -webkit-text-fill-color: #64748B !important;
+    }
+    /* 确保聚焦时输入文字也可见 */
+    input:focus, textarea:focus {
+        color: #F8FAFC !important;
+        -webkit-text-fill-color: #F8FAFC !important;
+        background-color: #1E293B !important;
+    }
+    /* 覆盖 WebKit 自动填充 */
+    input:-webkit-autofill,
+    input:-webkit-autofill:focus {
+        -webkit-text-fill-color: #F8FAFC !important;
+        -webkit-box-shadow: 0 0 0 1000px #1E293B inset !important;
+        transition: background-color 9999s ease-in-out 0s;
+    }
+    [data-testid="stChatInput"] textarea {
+        border-radius: 14px !important;
+        background: #1E293B !important;
+        color: #F8FAFC !important;
+        border: 1px solid rgba(255,255,255,0.14) !important;
+        padding: 0.75rem 1rem !important;
+        font-size: 0.95rem;
     }
 
     /* ===== Toast / 提示 ===== */
     [data-testid="stAlert"] {
         border-radius: 12px !important;
-        background: var(--bg-card) !important;
-        border: 1px solid var(--border) !important;
+        background: rgba(255,255,255,0.06) !important;
+        border: 1px solid rgba(255,255,255,0.10) !important;
+        color: #F8FAFC !important;
     }
+    [data-testid="stAlert"] * { color: #F8FAFC !important; }
 
     /* ===== 滚动条 ===== */
-    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb {
-        background: rgba(255,255,255,0.12);
-        border-radius: 4px;
-        transition: background 0.2s;
-    }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.10); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.18); }
+
+    /* ===== 代码块 ===== */
+    .stMarkdown code { background: rgba(255,255,255,0.06); border-radius: 6px; padding: 0.2rem 0.4rem; color: #F8FAFC; font-size: 0.9rem; }
+    .stMarkdown pre { background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); color: #F8FAFC; }
 
     /* ===== 空状态 ===== */
     .empty-state {
         text-align: center;
         padding: 3rem 1rem;
-        color: var(--text-muted);
+        color: #94A3B8;
     }
     .empty-state .empty-icon {
         font-size: 3.5rem;
         margin-bottom: 1.5rem;
-        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
     }
     .empty-state h3 {
-        color: var(--text-primary);
+        color: #F8FAFC;
         margin-bottom: 0.8rem;
         font-size: 1.4rem;
     }
@@ -341,40 +385,12 @@ st.markdown("""
         margin: 0 auto;
         line-height: 1.6;
     }
-    .empty-state p strong {
-        color: var(--primary);
-    }
 
     /* ===== 响应式 ===== */
     @media (max-width: 768px) {
         .stat-cards { flex-direction: column; }
         .app-header { flex-direction: column; text-align: center; }
-    }
-
-    /* ===== 代码块美化 ===== */
-    .stMarkdown code {
-        background: rgba(255,255,255,0.08);
-        border-radius: 6px;
-        padding: 0.2rem 0.4rem;
-        color: var(--text-primary);
-        font-size: 0.9rem;
-    }
-    .stMarkdown pre {
-        background: rgba(255,255,255,0.05);
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        color: var(--text-primary);
-    }
-
-    /* ===== Streamlit 默认元素覆盖 ===== */
-    .stMarkdown, .stMarkdown *, .stMarkdown p, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
-        color: var(--text-primary) !important;
-    }
-    .stText, .stText * {
-        color: var(--text-primary) !important;
-    }
-    .stCaption {
-        color: var(--text-muted) !important;
+        .action-row { gap: 0.4rem; }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -383,6 +399,8 @@ st.markdown("""
 # ============================================================
 # Session State
 # ============================================================
+INIT_IMMUTABLE = {"initialized", "model_key", "agent", "doc_pipeline", "model"}
+
 def init_session():
     if "initialized" not in st.session_state:
         st.session_state.initialized = False
@@ -390,6 +408,9 @@ def init_session():
         st.session_state.model_key = config.get("models", "models.default", "deepseek")
         st.session_state.agent = None
         st.session_state.doc_pipeline = None
+        st.session_state.active_action = None  # 当前激活的快捷功能
+        st.session_state.uploaded_file_path = None  # 上传文件的临时路径
+        st.session_state.uploaded_file_name = None
 
 
 def create_model(model_key: str):
@@ -436,7 +457,6 @@ async def process_message(user_input: str) -> str:
 # 顶部标题栏
 # ============================================================
 def render_header():
-    # 居中显示标题
     st.markdown("""
     <div style="text-align:center;">
         <div class="app-header" style="display:inline-flex;min-width:500px;">
@@ -449,7 +469,6 @@ def render_header():
     </div>
     """, unsafe_allow_html=True)
 
-    # 模型信息显示在右侧
     if st.session_state.initialized:
         col1, col2, col3 = st.columns([5, 1, 2])
         with col3:
@@ -493,203 +512,90 @@ def render_stat_cards():
 
 
 # ============================================================
-# 快捷入口
+# 执行快捷功能 — 输入文本后执行具体操作
 # ============================================================
-def render_quick_actions():
-    # 初始化快捷操作状态
-    if "quick_action" not in st.session_state:
-        st.session_state.quick_action = None
+def execute_action(user_text: str):
+    """根据当前激活的功能执行操作"""
+    if not st.session_state.initialized:
+        return
 
-    col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 1, 1])
+    action = st.session_state.get("active_action")
 
-    with col1:
-        if st.button("💡 总结文档", use_container_width=True, key="qa_summarize"):
-            st.session_state.quick_action = "summarize"
-            st.rerun()
-    with col2:
-        if st.button("🔍 搜索知识库", use_container_width=True, key="qa_search"):
-            st.session_state.quick_action = "search"
-            st.rerun()
-    with col3:
-        if st.button("📨 发送通知", use_container_width=True, key="qa_notify"):
-            st.session_state.quick_action = "notify"
-            st.rerun()
-    with col4:
-        if st.button("📄 分析简历", use_container_width=True, key="qa_resume"):
-            st.session_state.quick_action = "resume"
-            st.rerun()
-    with col5:
-        if st.button("🌐 网络搜索", use_container_width=True, key="qa_search_web"):
-            st.session_state.quick_action = "web_search"
-            st.rerun()
+    if action == "search":
+        # 知识库搜索
+        with st.spinner("🔍 正在搜索知识库..."):
+            results = st.session_state.doc_pipeline.search(user_text, top_k=5)
 
-    # 根据快捷操作显示相应的功能区域
-    if st.session_state.quick_action:
-        st.divider()
+        if not results:
+            response = "未找到相关文档。请先在侧边栏上传文档到知识库。"
+        else:
+            context = "\n\n---\n\n".join([
+                f"[来源{i}: {doc.get('metadata', {}).get('filename', '未知')}]\n{doc.get('content', '')}"
+                for i, doc in enumerate(results, 1)
+            ])
+            with st.spinner("🧠 正在整理回答..."):
+                response = asyncio.run(st.session_state.model.chat(
+                    messages=[
+                        {"role": "system", "content": "你是一个知识库问答助手。请基于以下上下文回答用户问题，如果上下文中没有答案，请如实告知。回答要简洁清晰，使用中文。"},
+                        {"role": "user", "content": f"问题：{user_text}\n\n上下文：\n{context}"}
+                    ]
+                ))
+        st.session_state.messages.append({"role": "user", "content": f"🔍 搜索知识库: {user_text}"})
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.session_state.active_action = None
 
-        if st.session_state.quick_action == "summarize":
-            st.markdown("### 📄 文档总结")
-            uploaded = st.file_uploader(
-                "上传要总结的文档",
-                type=["pdf", "docx", "pptx", "xlsx", "md", "txt"],
-                key="summarize_upload"
+    elif action == "notify":
+        # 发送通知
+        from src.agent.state import AgentState
+        from src.agent.nodes.notification import NotificationNode
+
+        notify_node = NotificationNode(st.session_state.model)
+        platform_map = {"飞书": "feishu", "企业微信": "wecom", "钉钉": "dingtalk"}
+        platform = st.session_state.get("notify_platform", "企业微信")
+        platform_key = platform_map.get(platform, "wecom")
+
+        with st.spinner(f"📨 正在发送通知到 {platform}..."):
+            state = AgentState(
+                user_input=user_text,
+                notification_target=platform_key,
+                notification_content=user_text,
+                messages=[]
             )
-            if uploaded and st.button("📋 生成摘要", type="primary"):
-                # 保存文件到临时目录
-                temp_dir = Path("data/uploads")
-                temp_dir.mkdir(parents=True, exist_ok=True)
-                temp_path = temp_dir / uploaded.name
-                temp_path.write_bytes(uploaded.getbuffer())
+            result = asyncio.run(notify_node(state))
 
-                # 解析文档内容
-                from src.mcp.tools.document_parser import DocumentParserTool
-                parser = DocumentParserTool()
-                with st.spinner("正在解析文档..."):
-                    content = asyncio.run(parser.execute(str(temp_path)))
+        response = result.get("final_response", "通知处理完成")
+        st.session_state.messages.append({"role": "user", "content": f"📨 发送通知到 {platform}"})
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.session_state.active_action = None
 
-                # 使用 LLM 生成摘要
-                with st.spinner("正在生成摘要..."):
-                    system_prompt = """你是一个专业的文档摘要助手。请对以下文档内容生成一份结构化的摘要，包括：
+    elif action == "resume":
+        # 分析简历 — 需要上传文件
+        file_path = st.session_state.get("uploaded_file_path")
+        file_name = st.session_state.get("uploaded_file_name", "未知文件")
 
-1. **核心观点** - 文档的主要论点和结论
-2. **关键信息** - 重要的数据、事实和细节
-3. **结构概览** - 文档的组织结构和主要内容块
-4. **总结建议** - 基于文档内容的建议或行动项
+        if not file_path or not Path(file_path).exists():
+            response = "请先上传简历文件（PDF 或 DOCX），再进行分析。"
+            st.session_state.messages.append({"role": "user", "content": f"📄 分析简历: {user_text}"})
+            st.session_state.messages.append({"role": "assistant", "content": response})
+            st.session_state.active_action = None
+            return
 
-请用中文回答，格式清晰。"""
-                    response = asyncio.run(st.session_state.model.chat(
-                        messages=[
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": f"请总结以下文档：\n\n{content[:50000]}"}
-                        ]
-                    ))
+        from src.mcp.tools.document_parser import DocumentParserTool
+        parser = DocumentParserTool()
 
-                # 显示结果
-                st.success("✅ 摘要生成完成！")
-                st.markdown(response)
+        with st.spinner("📄 正在解析简历..."):
+            content = asyncio.run(parser.execute(str(file_path)))
 
-                # 添加到对话历史
-                st.session_state.messages.append({
-                    "role": "user",
-                    "content": f"📄 总结文档: {uploaded.name}"
-                })
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content": response
-                })
-
-        elif st.session_state.quick_action == "search":
-            st.markdown("### 🔍 知识库搜索")
-            query = st.text_input("搜索关键词", key="kb_search_query")
-            if st.button("搜索", type="primary") and query:
-                # 执行知识库搜索
-                results = st.session_state.doc_pipeline.search(query, top_k=5)
-
-                if not results:
-                    st.warning("未找到相关文档。请先上传文档到知识库。")
-                else:
-                    st.success(f"找到 {len(results)} 条相关结果")
-
-                    # 显示结果
-                    for i, doc in enumerate(results, 1):
-                        with st.expander(f"{i}. {doc.get('metadata', {}).get('filename', '未知来源')} (相关度: {doc.get('score', 0):.2f})"):
-                            st.markdown(doc.get('content', ''))
-
-                    # 使用 LLM 整理回答
-                    with st.spinner("正在整理回答..."):
-                        context = "\n\n---\n\n".join([
-                            f"[来源{i}: {doc.get('metadata', {}).get('filename', '未知')}]\n{doc.get('content', '')}"
-                            for i, doc in enumerate(results, 1)
-                        ])
-                        response = asyncio.run(st.session_state.model.chat(
-                            messages=[
-                                {"role": "system", "content": "你是一个知识库问答助手。请基于以下上下文回答用户问题，如果上下文中没有答案，请如实告知。"},
-                                {"role": "user", "content": f"问题：{query}\n\n上下文：\n{context}"}
-                            ]
-                        ))
-                        st.markdown("---")
-                        st.markdown("### 📖 AI 整理回答")
-                        st.markdown(response)
-
-                    # 添加到对话历史
-                    st.session_state.messages.append({
-                        "role": "user",
-                        "content": f"🔍 搜索知识库: {query}"
-                    })
-                    st.session_state.messages.append({
-                        "role": "assistant",
-                        "content": response
-                    })
-
-        elif st.session_state.quick_action == "notify":
-            st.markdown("### 📨 发送通知")
-            platform_map = {"飞书": "feishu", "企业微信": "wecom", "钉钉": "dingtalk"}
-            platform = st.selectbox("选择平台", ["飞书", "企业微信", "钉钉"])
-            content = st.text_area("通知内容", key="notify_content", height=150)
-            if st.button("发送", type="primary") and content:
-                from src.agent.nodes.notification import NotificationNode
-                from src.agent.state import AgentState
-
-                notify_node = NotificationNode(st.session_state.model)
-
-                # 构建状态
-                state = AgentState(
-                    user_input=content,
-                    notification_target=platform_map[platform],
-                    notification_content=content,
-                    messages=[]
-                )
-
-                with st.spinner("正在发送通知..."):
-                    result = asyncio.run(notify_node(state))
-
-                # 显示结果
-                st.markdown(result.get("final_response", "通知处理完成"))
-
-                # 添加到对话历史
-                st.session_state.messages.append({
-                    "role": "user",
-                    "content": f"📨 发送通知到 {platform}"
-                })
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content": result.get("final_response", "")
-                })
-
-        elif st.session_state.quick_action == "resume":
-            st.markdown("### 📄 简历分析")
-            uploaded = st.file_uploader(
-                "上传简历",
-                type=["pdf", "docx"],
-                key="resume_upload"
-            )
-            if uploaded and st.button("🔬 开始分析", type="primary"):
-                # 保存文件
-                temp_dir = Path("data/uploads")
-                temp_dir.mkdir(parents=True, exist_ok=True)
-                temp_path = temp_dir / uploaded.name
-                temp_path.write_bytes(uploaded.getbuffer())
-
-                # 解析文档
-                from src.mcp.tools.document_parser import DocumentParserTool
-                parser = DocumentParserTool()
-                with st.spinner("正在解析简历..."):
-                    content = asyncio.run(parser.execute(str(temp_path)))
-
-                # 使用 LLM 分析简历
-                with st.spinner("正在分析简历..."):
-                    system_prompt = """你是一个专业的简历分析顾问。请对以下简历进行全面分析，输出格式如下：
+        system_prompt = """你是一个专业的简历分析顾问。请对以下简历进行全面分析：
 
 ## 📋 基本信息
-- 姓名、学历、工作年限等基础信息
+- 姓名、学历、工作年限等
 
 ## 💪 核心优势
-- 候选人的突出技能和经验
-- 与职位匹配的关键能力
+- 突出的技能和经验
 
 ## ⚠️ 潜在风险
-- 可能存在的不足或需要关注的地方
-- 职业发展中的潜在问题
+- 不足或需要关注的地方
 
 ## 📊 能力评分
 - 技术能力: X/10
@@ -698,72 +604,199 @@ def render_quick_actions():
 - 沟通能力: X/10
 
 ## 🎯 综合评价
-- 整体评估和建议
-- 是否推荐的结论
+请用中文，客观公正。"""
 
-请用中文回答，客观公正。"""
-                    response = asyncio.run(st.session_state.model.chat(
-                        messages=[
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": f"请分析以下简历：\n\n{content[:50000]}"}
-                        ]
-                    ))
+        with st.spinner("🧠 正在分析简历..."):
+            response = asyncio.run(st.session_state.model.chat(
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"请分析以下简历（附加上下文：{user_text}）：\n\n{content[:50000]}"}
+                ]
+            ))
 
-                # 显示结果
-                st.success("✅ 简历分析完成！")
-                st.markdown(response)
+        st.session_state.messages.append({"role": "user", "content": f"📄 分析简历: {file_name}"})
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.session_state.active_action = None
+        st.session_state.uploaded_file_path = None
+        st.session_state.uploaded_file_name = None
 
-                # 添加到对话历史
-                st.session_state.messages.append({
-                    "role": "user",
-                    "content": f"📄 分析简历: {uploaded.name}"
-                })
-                st.session_state.messages.append({
-                    "role": "assistant",
-                    "content": response
-                })
+    elif action == "web_search":
+        # 网络搜索
+        from src.mcp.tools.web_search import WebSearchTool
 
-        elif st.session_state.quick_action == "web_search":
-            st.markdown("### 🌐 网络搜索")
-            query = st.text_input("搜索关键词", key="web_search_query")
-            if st.button("搜索", type="primary") and query:
-                from src.mcp.tools.web_search import WebSearchTool
+        with st.spinner("🌐 正在搜索..."):
+            search_tool = WebSearchTool()
+            results_text = asyncio.run(search_tool.execute(user_text, max_results=5))
 
-                with st.spinner("正在搜索..."):
-                    search_tool = WebSearchTool()
-                    results_text = asyncio.run(search_tool.execute(query, max_results=5))
+        with st.spinner("🧠 正在整理..."):
+            response = asyncio.run(st.session_state.model.chat(
+                messages=[
+                    {"role": "system", "content": "你是一个信息整理助手。基于搜索结果，给出简洁清晰的答案总结，使用中文。"},
+                    {"role": "user", "content": f"问题：{user_text}\n\n搜索结果：\n{results_text}"}
+                ]
+            ))
 
-                    # 显示搜索结果
-                    st.success("✅ 搜索完成！")
-                    st.markdown(results_text)
+        full = f"**搜索结果：**\n{results_text}\n\n---\n**AI 整理：**\n{response}"
+        st.session_state.messages.append({"role": "user", "content": f"🌐 网络搜索: {user_text}"})
+        st.session_state.messages.append({"role": "assistant", "content": full})
+        st.session_state.active_action = None
 
-                    # 用 LLM 整理搜索结果
-                    with st.spinner("正在整理..."):
-                        response = asyncio.run(st.session_state.model.chat(
-                            messages=[
-                                {"role": "system", "content": "你是一个信息整理助手。请基于以下搜索结果，为用户提供清晰的答案总结。"},
-                                {"role": "user", "content": f"问题：{query}\n\n搜索结果：\n{results_text}"}
-                            ]
-                        ))
+    else:
+        # 普通对话
+        st.session_state.messages.append({"role": "user", "content": user_text})
+        with st.chat_message("user"):
+            st.markdown(user_text)
+        with st.chat_message("assistant"):
+            with st.spinner("思考中..."):
+                response = asyncio.run(process_message(user_text))
+            st.markdown(response)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+        return  # 普通对话走自己的流程，不 rerun
 
-                    st.markdown("---")
-                    st.markdown("### 📖 AI 整理总结")
-                    st.markdown(response)
+    # 快捷操作完成后显示结果并 rerun
+    with st.chat_message("user"):
+        st.markdown(st.session_state.messages[-2]["content"])
+    with st.chat_message("assistant"):
+        st.markdown(st.session_state.messages[-1]["content"])
+    st.rerun()
 
-                    # 添加到对话历史
-                    st.session_state.messages.append({
-                        "role": "user",
-                        "content": f"🌐 网络搜索: {query}"
-                    })
-                    st.session_state.messages.append({
-                        "role": "assistant",
-                        "content": f"搜索结果：\n{results_text}\n\nAI 整理：\n{response}"
-                    })
 
-        # 关闭按钮
-        if st.button("✖️ 关闭"):
-            st.session_state.quick_action = None
+# ============================================================
+# 功能面板（4个固定按钮 + 展开的操作面板）
+# ============================================================
+def render_action_bar():
+    """在输入框上方渲染固定的功能按钮行"""
+    active = st.session_state.get("active_action")
+
+    # 平台选择预设（通知用）
+    if "notify_platform" not in st.session_state:
+        st.session_state.notify_platform = "企业微信"
+
+    st.markdown('<div class="action-row" style="margin-bottom:0.4rem;">', unsafe_allow_html=True)
+
+    col1, col2, col3, col4, col5 = st.columns([1.1, 1.1, 1.1, 1.1, 1])
+
+    # --- 搜索知识库 ---
+    active_class = " active" if active == "search" else ""
+    with col1:
+        if st.button("🔍 搜索知识库", key="btn_search", use_container_width=True):
+            st.session_state.active_action = None if active == "search" else "search"
             st.rerun()
+        if active == "search":
+            st.markdown("""<style>#btn_search {border-color:#6366F1 !important; background:rgba(99,102,241,0.20) !important;}</style>""", unsafe_allow_html=True)
+
+    # --- 发送通知 ---
+    with col2:
+        if st.button("📨 发送通知", key="btn_notify", use_container_width=True):
+            st.session_state.active_action = None if active == "notify" else "notify"
+            st.rerun()
+        if active == "notify":
+            st.markdown("""<style>#btn_notify {border-color:#6366F1 !important; background:rgba(99,102,241,0.20) !important;}</style>""", unsafe_allow_html=True)
+
+    # --- 分析简历 ---
+    with col3:
+        if st.button("📄 分析简历", key="btn_resume", use_container_width=True):
+            st.session_state.active_action = None if active == "resume" else "resume"
+            st.rerun()
+        if active == "resume":
+            st.markdown("""<style>#btn_resume {border-color:#6366F1 !important; background:rgba(99,102,241,0.20) !important;}</style>""", unsafe_allow_html=True)
+
+    # --- 网络搜索 ---
+    with col4:
+        if st.button("🌐 网络搜索", key="btn_web", use_container_width=True):
+            st.session_state.active_action = None if active == "web_search" else "web_search"
+            st.rerun()
+        if active == "web_search":
+            st.markdown("""<style>#btn_web {border-color:#6366F1 !important; background:rgba(99,102,241,0.20) !important;}</style>""", unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # ---------- 展开的功能面板 ----------
+    if active == "notify":
+        st.markdown("""
+        <div style="display:flex;align-items:center;gap:0.6rem;margin:0.3rem 0;padding:0.3rem 0.3rem;">
+            <span style="font-size:0.85rem;color:#CBD5E1;white-space:nowrap;">📡 选择平台</span>
+        </div>
+        """, unsafe_allow_html=True)
+        st.session_state.notify_platform = st.radio(
+            "平台", ["企业微信", "钉钉", "飞书"],
+            horizontal=True, label_visibility="collapsed",
+            index=["企业微信", "钉钉", "飞书"].index(st.session_state.notify_platform)
+        )
+
+    elif active == "resume":
+        # 简历上传 — 内嵌在上方
+        st.markdown("""
+        <div style="display:flex;align-items:center;gap:0.6rem;margin:0.3rem 0;padding:0.3rem 0.3rem;">
+            <span style="font-size:0.85rem;color:#CBD5E1;white-space:nowrap;">📎 请上传简历文件</span>
+        </div>
+        """, unsafe_allow_html=True)
+        uploaded = st.file_uploader(
+            "上传", type=["pdf", "docx"],
+            key="inline_resume_upload",
+            label_visibility="collapsed"
+        )
+        if uploaded:
+            temp_dir = Path("data/uploads")
+            temp_dir.mkdir(parents=True, exist_ok=True)
+            temp_path = temp_dir / uploaded.name
+            temp_path.write_bytes(uploaded.getbuffer())
+            st.session_state.uploaded_file_path = str(temp_path)
+            st.session_state.uploaded_file_name = uploaded.name
+            st.success(f"已选择: {uploaded.name}")
+
+
+# ============================================================
+# 自定义输入栏
+# ============================================================
+def render_input_bar():
+    """渲染美观的输入栏（单行 TextInput + 发送按钮）"""
+    active = st.session_state.get("active_action")
+
+    action_label = {
+        "search": "🔍 搜索知识库",
+        "notify": "📨 发送通知",
+        "resume": "📄 分析简历",
+        "web_search": "🌐 网络搜索",
+    }
+
+    c_left, c_right = st.columns([10, 1.5])
+
+    with c_left:
+        placeholder = "输入您的问题，或点击上方按钮选择功能..."
+        if active and active in action_label:
+            placeholder = f"{action_label[active]} — 输入内容后点击发送"
+
+        user_text = st.text_input(
+            "",
+            placeholder=placeholder,
+            key="custom_input",
+            label_visibility="collapsed"
+        )
+
+    with c_right:
+        send_label = "↵ 执行" if active else "↵ 发送"
+        send_clicked = st.button(
+            send_label,
+            key="btn_send",
+            use_container_width=True,
+            type="primary" if active else "secondary"
+        )
+
+    # 点击发送按钮时处理
+    if send_clicked:
+        if user_text:
+            execute_action(user_text)
+        else:
+            st.toast("请输入内容", icon="⚠️")
+
+    # 回车时也处理（text_input 按回车会触发 rerun，值会被保存）
+    prev_input = st.session_state.get("_last_input", "")
+    if user_text and user_text != prev_input:
+        st.session_state._last_input = user_text
+        # 回车触发：检测到输入变化且非发送按钮触发
+        if not send_clicked:
+            execute_action(user_text)
 
 
 # ============================================================
@@ -775,7 +808,7 @@ def render_empty_state():
         <div class="empty-icon">👋</div>
         <h3>欢迎使用 AI 办公助手</h3>
         <p>我是您的智能办公伙伴，可以帮助您进行知识问答、文档处理、消息通知等任务。</p>
-        <p style="margin-top:1rem;font-size:0.85rem;color:#94A3B8;">💡 试试输入「帮我总结一下上周的会议纪要」或「发通知提醒大家交周报」</p>
+        <p style="margin-top:1rem;font-size:0.85rem;color:#94A3B8;">💡 点击上方按钮选择功能，或在输入框中直接提问</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -785,7 +818,6 @@ def render_empty_state():
 # ============================================================
 def render_sidebar():
     with st.sidebar:
-        # ---- 头部 ----
         st.markdown("""
         <div style="text-align:center;padding:0.5rem 0 1rem 0;">
             <div style="font-size:2.5rem;">🤖</div>
@@ -804,7 +836,6 @@ def render_sidebar():
             if k != "default" and isinstance(v, dict)
         ]
 
-        # 带 emoji 的模型标签
         model_labels = {
             "deepseek": "🟢 DeepSeek",
             "deepseek-reasoner": "🧠 DeepSeek R1",
@@ -850,7 +881,7 @@ def render_sidebar():
 
         # 上传
         uploaded_file = st.file_uploader(
-            "上传文档",
+            "上传文档到知识库",
             type=["pdf", "docx", "pptx", "xlsx", "md", "txt"],
             key="kb_upload",
             help="支持 PDF / Word / PPT / Excel / Markdown / 文本",
@@ -874,7 +905,7 @@ def render_sidebar():
 
         st.divider()
 
-        # ---- 操作 ----
+        # ---- 工具 ----
         st.markdown("### ⚙️ 工具")
         if st.button("🗑️ 清空对话", use_container_width=True):
             st.session_state.messages = []
@@ -907,7 +938,6 @@ def main():
     # ---- 主内容区 ----
     render_header()
     render_stat_cards()
-    render_quick_actions()
 
     # 聊天区域
     if not st.session_state.messages:
@@ -917,37 +947,20 @@ def main():
             with st.chat_message(msg["role"]):
                 st.markdown(msg["content"])
 
-    # 输入
-    st.markdown("""
-    <style>
-    [data-testid="stChatInput"] textarea::placeholder {
-        color: #94A3B8 !important;
-        font-style: italic;
-    }
-    /* 强制聊天输入框文字颜色 */
-    [data-testid="stChatInput"] textarea {
-        color: #F8FAFC !important;
-    }
-    [data-testid="stChatInput"] textarea:focus {
-        color: #F8FAFC !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    # ---- 底部输入区 ----
+    # 添加底部间距
+    st.markdown('<div class="chat-bottom-spacer" style="margin-top:1rem;"></div>', unsafe_allow_html=True)
 
-    user_input = st.chat_input("输入您的问题，或使用命令...", key="chat_input")
+    # 输入区容器
+    with st.container():
+        # 1. 功能按钮行（固定在输入框上方）
+        render_action_bar()
 
-    if user_input:
-        st.session_state.messages.append({"role": "user", "content": user_input})
-        with st.chat_message("user"):
-            st.markdown(user_input)
+        # 2. 自定义输入栏
+        render_input_bar()
 
-        with st.chat_message("assistant"):
-            with st.spinner("思考中..."):
-                response = asyncio.run(process_message(user_input))
-            st.markdown(response)
-
-        st.session_state.messages.append({"role": "assistant", "content": response})
-        st.rerun()
+    # 底部留白
+    st.markdown('<div style="height:0.5rem;"></div>', unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
